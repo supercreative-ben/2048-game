@@ -25,6 +25,7 @@ body {
 .tile-container {
     display: grid;
     grid-template-columns: repeat(5, 80px);
+    grid-template-rows: repeat(5, 80px);
     grid-gap: 10px;
     background-color: #bbada0;
     padding: 10px;

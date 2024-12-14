@@ -5,12 +5,16 @@ const scoreDisplay = document.getElementById('score');
 let score = 0;
 
 function createTiles() {
-    for (let i = 0; i < GRID_SIZE; i++) {
-        for (let j = 0; j < GRID_SIZE; j++) {
-            const tile = document.createElement('div');
-            tile.classList.add('tile');
-            tileContainer.appendChild(tile);
-        }
+    // Clear existing tiles
+    tileContainer.innerHTML = '';
+    
+    // Create exactly GRID_SIZE * GRID_SIZE tiles
+    const totalTiles = GRID_SIZE * GRID_SIZE;
+    for (let i = 0; i < totalTiles; i++) {
+        const tile = document.createElement('div');
+        tile.classList.add('tile');
+        tile.setAttribute('data-value', '');
+        tileContainer.appendChild(tile);
     }
 }
 
@@ -46,11 +50,11 @@ function move(direction) {
     let moved = false;
     const tempGrid = grid.map(row => [...row]);
 
-    if (direction === 'left' || direction === 'right') {
+    if (direction === 'left') {
+        // Move left
         for (let i = 0; i < GRID_SIZE; i++) {
             let row = grid[i].filter(cell => cell !== 0);
-            if (direction === 'right') row.reverse();
-
+            
             // Merge
             for (let j = 0; j < row.length - 1; j++) {
                 if (row[j] === row[j + 1]) {
@@ -59,24 +63,38 @@ function move(direction) {
                     row.splice(j + 1, 1);
                 }
             }
-
-            // Fill with zeros
+            
+            // Fill with zeros at the end
             while (row.length < GRID_SIZE) {
-                if (direction === 'left') {
-                    row.push(0);
-                } else {
-                    row.unshift(0);
-                }
+                row.push(0);
             }
-
-            if (direction === 'right') row.reverse();
             grid[i] = row;
         }
-    } else {
+    } else if (direction === 'right') {
+        // Move right
+        for (let i = 0; i < GRID_SIZE; i++) {
+            let row = grid[i].filter(cell => cell !== 0);
+            
+            // Merge from right to left
+            for (let j = row.length - 1; j > 0; j--) {
+                if (row[j] === row[j - 1]) {
+                    row[j] *= 2;
+                    score += row[j];
+                    row.splice(j - 1, 1);
+                }
+            }
+            
+            // Fill with zeros at the start
+            while (row.length < GRID_SIZE) {
+                row.unshift(0);
+            }
+            grid[i] = row;
+        }
+    } else if (direction === 'up') {
+        // Move up
         for (let j = 0; j < GRID_SIZE; j++) {
             let col = grid.map(row => row[j]).filter(cell => cell !== 0);
-            if (direction === 'down') col.reverse();
-
+            
             // Merge
             for (let i = 0; i < col.length - 1; i++) {
                 if (col[i] === col[i + 1]) {
@@ -85,13 +103,37 @@ function move(direction) {
                     col.splice(i + 1, 1);
                 }
             }
-
-            // Fill with zeros
+            
+            // Fill with zeros at the end
             while (col.length < GRID_SIZE) {
-                direction === 'up' ? col.push(0) : col.unshift(0);
+                col.push(0);
             }
-
-            if (direction === 'down') col.reverse();
+            
+            // Update the column in the grid
+            for (let i = 0; i < GRID_SIZE; i++) {
+                grid[i][j] = col[i];
+            }
+        }
+    } else if (direction === 'down') {
+        // Move down
+        for (let j = 0; j < GRID_SIZE; j++) {
+            let col = grid.map(row => row[j]).filter(cell => cell !== 0);
+            
+            // Merge from bottom to top
+            for (let i = col.length - 1; i > 0; i--) {
+                if (col[i] === col[i - 1]) {
+                    col[i] *= 2;
+                    score += col[i];
+                    col.splice(i - 1, 1);
+                }
+            }
+            
+            // Fill with zeros at the start
+            while (col.length < GRID_SIZE) {
+                col.unshift(0);
+            }
+            
+            // Update the column in the grid
             for (let i = 0; i < GRID_SIZE; i++) {
                 grid[i][j] = col[i];
             }
