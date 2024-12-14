@@ -62,7 +62,11 @@ function move(direction) {
 
             // Fill with zeros
             while (row.length < GRID_SIZE) {
-                direction === 'left' ? row.push(0) : row.unshift(0);
+                if (direction === 'left') {
+                    row.push(0);
+                } else {
+                    row.unshift(0);
+                }
             }
 
             if (direction === 'right') row.reverse();
