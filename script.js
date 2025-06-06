@@ -157,6 +157,16 @@ function move(direction) {
 }
 
 function handleKeyPress(event) {
+    if ([
+        'ArrowLeft',
+        'ArrowRight',
+        'ArrowUp',
+        'ArrowDown'
+    ].includes(event.key)) {
+        // Prevent the page from scrolling when using arrow keys
+        event.preventDefault();
+    }
+
     switch(event.key) {
         case 'ArrowLeft':
             move('left');
