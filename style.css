@@ -20,6 +20,7 @@ body {
     background-color: #bbada0;
     border-radius: 6px;
     margin: 0 auto;
+    padding-top: 60px;
 }
 
 .grid-container {
@@ -34,8 +35,8 @@ body {
 
 .tile-container {
     position: absolute;
-    top: 10px;
-    left: 10px;
+    top: 70px;
+    left: 25px;
     width: 440px;
     height: 440px;
     pointer-events: none;
@@ -76,7 +77,8 @@ body {
 
 .score-container {
     position: absolute;
-    top: 10px;
-    left: 10px;
+    top: 15px;
+    left: 15px;
     color: #776e65;
+    font-size: 18px;
 }
